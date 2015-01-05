@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -15,7 +16,7 @@ public class Sharded<R, S extends ShardInfo<R>> {
   public static final int DEFAULT_WEIGHT = 1;
   private TreeMap<Long, S> nodes;
   private final Hashing algo;
-  private final Map<ShardInfo<R>, R> resources = new LinkedHashMap<ShardInfo<R>, R>();
+  private final Map<S, R> resources = new LinkedHashMap<S, R>();
 
   /**
    * The default pattern used for extracting a key tag. The pattern must have a group (between
@@ -99,8 +100,8 @@ public class Sharded<R, S extends ShardInfo<R>> {
     return key;
   }
 
-  public Collection<S> getAllShardInfo() {
-    return Collections.unmodifiableCollection(nodes.values());
+  public Set<S> getAllShardInfo() {
+	return Collections.unmodifiableSet(resources.keySet());
   }
 
   public Collection<R> getAllShards() {
